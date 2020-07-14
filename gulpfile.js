@@ -20,6 +20,8 @@ Path.css = path.join(__dirname, 'src', 'static', 'css')
 const code_syntax_js  = toScript(fs.readFileSync(path.join(Path.js, 'highlight.pack.js')))
 const code_syntax_css = toStyle(fs.readFileSync(path.join(Path.css, 'styles', 'a11y-dark.css')))
 
+const markdown_default_css = toStyle(fs.readFileSync(path.join(Path.css, 'styles', 'splendor.css')))
+
 function toScript(js){
     return `<script>${js}</script>`
 }
@@ -47,6 +49,7 @@ gulp.task('markdown', function () {
             file.contents = Buffer.concat([
                 Buffer.from(code_syntax_js),
                 Buffer.from(code_syntax_css),
+                Buffer.from(markdown_default_css),
                 file.contents, 
                 Buffer.from(extra_js),
                 Buffer.from(extra_css),
@@ -57,6 +60,8 @@ gulp.task('markdown', function () {
         .pipe(gulp.dest('./dist'))
 })
 
-gulp.task('default', function () {
-	return gulp.watch('./src/*.md', gulp.series(['markdown']))
+gulp.task('watch', function () {
+    return gulp.watch('./src/*.md', gulp.series(['markdown']))
 })
+
+gulp.task('default', gulp.series(['markdown', 'watch']))
