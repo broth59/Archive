@@ -101,8 +101,7 @@ var hljs=function(){"use strict";function e(n){Object.freeze(n);var t="function"
     .hljs-selector-tag {
         font-weight: bold;
     }
-}
-</style><style>@media print {
+}</style><style>@media print {
     *,
     *:before,
     *:after {
@@ -326,14 +325,21 @@ var hljs=function(){"use strict";function e(n){Object.freeze(n);var t="function"
   a:focus,
   a:active {
     color: #2980b9;
-  }</style><h1>Title</h1>
-<blockquote>
-<p>인용문인데요..</p>
-</blockquote>
-<pre><code class="language-js">    const title = 'this is highlited block'
-</code></pre>
-<script>document.addEventListener('DOMContentLoaded', (event) => {
+  }</style><h1>Title</h1><blockquote><p>인용문인데요..</p></blockquote><pre><code class="language-js">    const title = 'this is highlited block'
+</code></pre><script>//Syntax Highlight 적용
+document.addEventListener('DOMContentLoaded', (event) => {
     document.querySelectorAll('pre code').forEach((block) => {
       hljs.highlightBlock(block);
-    });
-});</script><style></style>
+    });          
+});
+
+const webSocket = new WebSocket('ws:localhost:3211')
+
+webSocket.onopen = function(){
+  console.log('Websocket has been connected')  
+}			
+
+webSocket.onmessage = function(){
+  location.reload(true)
+  // location.href = location.href
+}</script><style></style>

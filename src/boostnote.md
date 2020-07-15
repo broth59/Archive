@@ -439,7 +439,7 @@ Long --> "Bob()" : ok
 -   LeftTask 1.2
 
 
--   Task 1.3
+-   Task 1.3   
 -   Part Two
 -   Task 2.1
 -   Task 2.2

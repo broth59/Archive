@@ -1,12 +1,15 @@
 //node
 const fs = require('fs')
 const path = require('path')
+const WebSocketServer = require('ws').Server
 
 //gulp
 const gulp = require('gulp')
 const through = require('through2')
 const markdown = require('gulp-markdown-it')
 const uglify = require('gulp-uglify')
+const htmlmin = require('gulp-htmlmin')
+const livereload = require('gulp-livereload')
 
 //path
 const Path = {}
@@ -38,6 +41,13 @@ function readFile(path, options){
     })
 }
 
+const server = new WebSocketServer({ port: 3211 });
+let web_socket; 
+
+server.on("connection", function(webSocket) {
+    web_socket = webSocket
+});
+
 gulp.task('markdown', function () {
     return gulp.src('./src/**/*.md')
         .pipe(markdown())
@@ -57,11 +67,22 @@ gulp.task('markdown', function () {
             
             push(null, file)
         }))
+        .pipe(htmlmin({ collapseWhitespace: true }))
         .pipe(gulp.dest('./dist'))
+        .pipe(livereload())
+})
+
+gulp.task('reload', function(){
+    console.log('reload')
+    return new Promise(resolve=>{
+        resolve()
+        if(web_socket) web_socket.send('hi')
+    })
 })
 
 gulp.task('watch', function () {
-    return gulp.watch('./src/*.md', gulp.series(['markdown']))
+    gulp.watch(['./src/**/*.md', './src/**/*.js','./src/**/*.scss',], gulp.series(['markdown', 'reload']))
 })
 
 gulp.task('default', gulp.series(['markdown', 'watch']))
+
