@@ -431,7 +431,7 @@ Long --> "Bob()" : ok
 
 @startwbs
 
--   Project
+-   Project 
 -   Part One
 -   Task 1.1
 
@@ -440,8 +440,8 @@ Long --> "Bob()" : ok
 
 
 -   Task 1.3   
--   Part Two
--   Task 2.1
+-   Part Two 
+-   Task 2.1 
 -   Task 2.2
        \-_ Task 2.2.1 To the left boxless
        \-_ Task 2.2.2 To the Left boxless
