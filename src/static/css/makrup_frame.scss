@@ -253,19 +253,59 @@
     font-family: 'Maplestory', 'Arial';
 } 
     
-/* Main frame  */  
+body {
+    background: 
+      radial-gradient(black 3px, transparent 4px),
+      radial-gradient(black 3px, transparent 4px),
+      linear-gradient(#fff 4px, transparent 0),
+      linear-gradient(45deg, transparent 74px, transparent 75px, #a4a4a4 75px, #a4a4a4 76px, transparent 77px, transparent 109px),
+      linear-gradient(-45deg, transparent 75px, transparent 76px, #a4a4a4 76px, #a4a4a4 77px, transparent 78px, transparent 109px),
+    #fff;
+    background-size: 109px 109px, 109px 109px,100% 6px, 109px 109px, 109px 109px;
+    background-position: 54px 55px, 0px 0px, 0px 0px, 0px 0px, 0px 0px;
+}
+
+/* Main frame  */
+
 main {
+    padding: 10px 10px 10px 10px;
     margin-left: auto;
     margin-right: auto; 
     min-width: 26rem; 
-    max-width: 46rem;
+    max-width: 76rem;
+
+    border-radius: 10px;
+
+    background-color: white;
+}
+
+aside#scroll-gage{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 50px;
+    height: 25px;
+
+    color: white;
+    font-weight: 700;
+
+    border: 1px solid red;
+    border-radius: 0 0 5px 0;
+
+    background-color: red;
+    
 }
     
 /* 헤더 */ 
 h1, h2, h3 {
 	font-weight: 400;
 }  
-h1,h2 {
+h1,h2,h3,h4 {
     // font-weight: bolder;
     color : #b30000;
     border-color:  #800000; 
@@ -278,36 +318,164 @@ h1 {
 	border-bottom-style: solid;
 }
 
+h2 {
+    padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
  
   
 /* 인용문 */
-blockquote{
+blockquote {
+    position: relative;
+
+	margin: 0 7px 0 5px;
+    padding: 5px 16px 5px 15px;
+    
+    color: #8e0000;
+
+	border-left-width: 5px;
+	border-left-style: solid;
     border-color: #b30000;
+
+    background-color: #fff4f4;
+}
+blockquote::after{
+    content: '"';
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top:20px;
+    left:-12.5px;
+    
+    height: 15px;
+    width: 15px;
+    
+    color: white;
+    
+    border-radius: 100%;
+    border: 2px solid #b30000;
+
+    background-color: #b30000;
+    background-image: url('img/blockquote.png');
+    background-size: 100% auto;
+    background-position: center center;
 }
 
 /* 코드조각 */
 pre>code.hljs{
     position: relative;
+    
+    border-radius: 5px 5px 5px 5px;
 }
-
-pre>code.hljs::after {
+ 
+pre>code.hljs::after { 
     content: attr(data-lang);
+    
     position: absolute;
     top: 0;
     right: 0;
+    
+    height: 15px;
+    padding: 2px 7px;
+    
     color: #fff;
     text-align: right;
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 1px;
+    
     background: #9b9b9b;
-    padding: 2px 7px;
     line-height: 15px;
-    height: 15px;
     border-radius: 0 0 0 2px;
 }
+
+/* 페이지 */
+p {
+    display: flex;
+}
+
+
+/* 이미지 */
+img {
+    max-width: 80%; 
+
+    margin-left: auto;
+    margin-right: auto;
+
+    border-radius: 5%;
+}
+
+
+/* 하이퍼 텍스트 */
+a {
+    position: relative; 
+
+    margin: 0 0.5em 0 0.5em;
+
+    color: seagreen;
+	text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+        
+        &::after {
+            content: attr(href);
+            
+            position: absolute;
+            top: 95%;
+            left: 0;
+
+            max-width: 200px;
+            padding: 2px 5px 2px 5px;
+
+            background-color: black;     
+            border-radius: 5px;
+
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    }
+}
+
+/* 테이블 */
+table{
+    margin-left: 16px;
+
+    *{
+        border-color: #39004d; 
+    }
+
+    thead{
+        color:  #39004d;
+        border-bottom-width: 2px;
+        border-bottom-style: dashed;
+    }
+}
+
 
 /* ETC Fragment */
 hr {
     border-color: #b30000;
 }
+
+    /* 단어 포맷 */
+    p>code, li>code{
+        padding:2px;
+        margin: 0 0.5em 0 0.5em;
+        
+        color: white;
+        font-weight: bold;
+        
+        background-color: #d24d4d;
+        border-radius : 4px 4px 4px 4px;
+    }
+
+    tt{
+        color: blue;
+    }

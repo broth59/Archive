@@ -51,7 +51,10 @@ function toStyle(css){
 
 function wrapContents(contents_buffer){
     return Buffer.concat([
-        Buffer.from(`<main>`),
+        Buffer.from(`
+        <aside id='scroll-gage'>0%</aside>
+        <main>
+        `),
         contents_buffer,
         Buffer.from('</main>'),
     ])
@@ -76,14 +79,14 @@ server.on("connection", function(webSocket) {
 });
 
 /* Task */
-
+ 
 gulp.task('scss', function(){
-    const code_syntax_css = gulp.src(path.join(Path.css, 'styles', 'a11y-dark.css'))
+    const code_syntax_css = gulp.src(path.join(Path.css, 'styles', 'dark.css'))
     const fonts_css = gulp.src(path.join(Path.css, 'fonts.css'))
 
     return gulp.src('./src/**/*.scss')
         .pipe(scss().on('error', scss.logError))
-        // .pipe(fonts_css)
+        .pipe(fonts_css)
         .pipe(code_syntax_css)
         .pipe(concat('app.css'))
         .pipe(css_base64({
@@ -161,7 +164,7 @@ gulp.task('watch', function () {
 gulp.task('default', gulp.series(['scss','js','markdown', 'watch']))
 
 
-process.on('SIGINT', function() {
+process.on('SIGINT', function() { 
     server.close()
     shell.rm('-r', Path.temp)
 })
