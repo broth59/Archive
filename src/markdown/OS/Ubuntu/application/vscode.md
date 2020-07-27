@@ -1,7 +1,7 @@
 # VSCODE 
 ## installation
 
-1. `install` curl
+1. `install` curl   
     ```shell
     $  apt-get install curl
     ``` 
@@ -101,7 +101,7 @@ module.export = {
 1.  `Init project` which of name startsWiths 'eslint-config-'
 
 
-```description
+```
 eslint-config-[설정 이름]/
  ├── index.js
  └── package.json
@@ -129,6 +129,8 @@ $ npm pulish
 ```
 
 ### Prettier
+>Code literal formatter
+
 
 * **Configuration**
     
@@ -157,3 +159,6 @@ $ npm pulish
 
 ```
 
+- sdf
+    - as
+        - asd

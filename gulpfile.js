@@ -1,6 +1,7 @@
 //node
 const fs = require('fs')
 const path = require('path')
+const axios = require('axios').default
 const WebSocketServer = require('ws').Server
 const shell = require('shelljs')
 const merge = require('merge-stream')
@@ -11,6 +12,7 @@ const through = require('through2')
 const markdown = require('gulp-markdown')
 const scss = require('gulp-sass')
 const concat = require('gulp-concat')
+const replace = require('gulp-replace')
 const inlineFonts = require('gulp-inline-fonts');
     //minify
     const uglify  = require('gulp-uglify-es').default
@@ -52,6 +54,7 @@ function toStyle(css){
 function wrapContents(contents_buffer){
     return Buffer.concat([
         Buffer.from(`
+        <ul id='search-tree'></ul>
         <aside id='scroll-gage'>0%</aside>
         <main>
         `),
@@ -59,6 +62,8 @@ function wrapContents(contents_buffer){
         Buffer.from('</main>'),
     ])
 }
+
+/* File System Manipulation */
 
 function readFile(path, options){
     return new Promise((resolve,error)=>{
@@ -69,6 +74,25 @@ function readFile(path, options){
     })
 }
 
+function readHierarchy(file_path, criteria_path){
+    const stats = fs.lstatSync(file_path)
+
+    let info = {
+        path: path.relative(criteria_path, file_path).replace('..\\', ''),
+        name: path.basename(file_path)
+    }
+
+    if (stats.isDirectory()) {
+        info.type = "folder"
+        info.children = fs.readdirSync(file_path).map(function(child) {
+            return readHierarchy(path.join(file_path, child), criteria_path);
+        })
+    } else {
+        info.type = "file"
+    }
+
+    return info
+}
 
 
 const server = new WebSocketServer({ port: 3212 });
@@ -83,16 +107,21 @@ server.on("connection", function(webSocket) {
 gulp.task('scss', function(){
     const code_syntax_css = gulp.src(path.join(Path.css, 'styles', 'dark.css'))
     const fonts_css = gulp.src(path.join(Path.css, 'fonts.css'))
+    const src_fonts_css = gulp.src(path.join(Path.css, 'src_fonts.css'))
 
     return gulp.src('./src/**/*.scss')
         .pipe(scss().on('error', scss.logError))
         .pipe(fonts_css)
         .pipe(code_syntax_css)
-        .pipe(concat('app.css'))
+        
         .pipe(css_base64({
             baseDir: './src/static',
             debug: true
         }).on('error', _=>_))
+        
+        // .pipe(src_fonts_css)
+        .pipe(concat('app.css'))
+        
         .pipe(minify())
         .pipe(gulp.dest(Path.temp))
 })  
@@ -123,10 +152,11 @@ gulp.task('js', function(){
         .pipe(gulp.dest(Path.temp))
 }) 
  
+
 gulp.task('markdown', function () {
     return gulp.src('./src/markdown/**/*.md')
         .pipe(markdown())
-        .pipe(through.obj(async function(file, encoding, push){
+        .pipe(through.obj(async function (file, encoding, push){
             const extra_css = toStyle(await readFile(path.join(Path.temp, 'app.css')))
             const extra_js  = toScript(await readFile(path.join(Path.temp, 'app.js')))
             
@@ -138,14 +168,36 @@ gulp.task('markdown', function () {
                 Buffer.from(extra_js),
             ])
             push(null, file)
-            
         }))
         .pipe(html_base64('./src/static/img'))
+        // .pipe(replace(/src\s*=\s*(?:"|')(http\S+)(?:"|')/g, async function(full_text,url){
+        //     if(url_cache.has(url)){
+        //         return url_cache.get(url) 
+        //     }
+        //     return await axios.get('https://www.blockchaintoday.co.kr/news/photo/201911/11591_11634_3252.png', {
+        //         responseType: 'blob'   
+        //     }).then((result)=>{
+        //         console.log(result.headers['content-type'])
+        //         return `src="data:${result.headers['content-type']};base64,${Buffer.from(result.data).toString('base64')}"` 
+        //     }).catch((e)=>{
+        //         console.log(e)
+        //     })        
+        // }))
+        .pipe(gulp.dest('./dist'))
+        .pipe(through.obj(async function(file, encoding, push){
+            const dist_html_path = file.history[file.history.length-1]
+            const fs_hierarchy_literal = JSON.stringify(readHierarchy(Path.dist, dist_html_path)).replace(/\\\\/g, '/')
+            const content = file.contents.toString()
+            file.contents = Buffer.from( content.replace('#tree_json_literal#', ()=>fs_hierarchy_literal), encoding)
+            
+            push(null, file)
+        }))
         .pipe(htmlmin({ collapseWhitespace: true }))
         .pipe(gulp.dest('./dist'))
 })
 
-gulp.task('reload', function(){
+
+gulp.task('reload', function(){ 
     return new Promise(resolve=>{
         setTimeout(_=>{
             web_socket && web_socket.send('reload')
@@ -153,18 +205,24 @@ gulp.task('reload', function(){
         }, 10)
     })
 })
- 
+
+let watch_stream_list = []
  
 gulp.task('watch', function () {
-    gulp.watch(['./src/**/*.md'], gulp.series(['markdown', 'reload']))
-    gulp.watch(['./src/**/*.scss'], gulp.series(['scss', 'markdown', 'reload']))
-    gulp.watch(['./src/**/*.js'], gulp.series(['js','markdown', 'reload']))
+    watch_stream_list = watch_stream_list.concat(
+          gulp.watch(['./src/**/*.md'], gulp.series(['markdown', 'reload']))
+        , gulp.watch(['./src/**/*.scss'], gulp.series(['scss', 'markdown', 'reload']))
+        , gulp.watch(['./src/**/*.js'], gulp.series(['js','markdown', 'reload']))
+    )
 })
 
 gulp.task('default', gulp.series(['scss','js','markdown', 'watch']))
 
 
 process.on('SIGINT', function() { 
-    server.close()
+    server.close() 
     shell.rm('-r', Path.temp)
+    watch_stream_list.forEach(watch_stream=>{
+        watch_stream.close()
+    })
 })

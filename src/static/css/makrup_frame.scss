@@ -99,7 +99,7 @@
   
 //   h1,
 //   .splendor-h1 {
-//     margin-top: 0;
+//     margin-top: 0; 
 //     font-size: 3.998rem;
 //   }
   
@@ -267,10 +267,9 @@ body {
 
 /* Main frame  */
 
-main {
-    padding: 10px 10px 10px 10px;
-    margin-left: auto;
-    margin-right: auto; 
+main {   
+    padding: 2em;
+    margin: 2em auto 2em auto;
     min-width: 26rem; 
     max-width: 76rem;
 
@@ -278,8 +277,11 @@ main {
 
     background-color: white;
 }
+   
+/* 위젯  */
 
-aside#scroll-gage{
+    //스크롤 게이지
+aside#scroll-gage{ 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -295,18 +297,52 @@ aside#scroll-gage{
     font-weight: 700;
 
     border: 1px solid red;
+    border-top-width: 0;
+    border-left-width: 0;
     border-radius: 0 0 5px 0;
 
-    background-color: red;
+    background-color: #d40000;
     
 }
+
+    //검색 트리
+ul#search-tree{
+    display: none;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    width: 80%;
+    padding: 0.1em;
+    margin: 0 auto 0 auto;
+
+    z-index: 10;
+
+    li{
+        list-style-type:none;
+    
+        //폴더
+        &.foler{
+            
+        }
+        //파일
+        &.file{
+            display: none;            
+        }
+    }
+}
+
+
+
     
 /* 헤더 */ 
 h1, h2, h3 {
 	font-weight: 400;
 }  
-h1,h2,h3,h4 {
-    // font-weight: bolder;
+h1,h2,h3,h4 { 
+    // font-weight: bolder; 
     color : #b30000;
     border-color:  #800000; 
 } 
@@ -367,13 +403,14 @@ blockquote::after{
 }
 
 /* 코드조각 */
+
 pre>code.hljs{
     position: relative;
     
     border-radius: 5px 5px 5px 5px;
 }
  
-pre>code.hljs::after { 
+pre>code.hljs::after {  
     content: attr(data-lang);
     
     position: absolute;
@@ -423,23 +460,23 @@ a {
     &:hover {
         text-decoration: underline;
         
-        &::after {
-            content: attr(href);
+        // &::after {
+        //     content: attr(href);
             
-            position: absolute;
-            top: 95%;
-            left: 0;
+        //     position: absolute;
+        //     top: 95%;
+        //     left: 0;
 
-            max-width: 200px;
-            padding: 2px 5px 2px 5px;
+        //     max-width: 200px;
+        //     padding: 2px 5px 2px 5px;
 
-            background-color: black;     
-            border-radius: 5px;
+        //     background-color: black;     
+        //     border-radius: 5px;
 
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
-        }
+        //     text-overflow: ellipsis;
+        //     white-space: nowrap;
+        //     overflow: hidden;
+        // }
     }
 }
 
@@ -465,17 +502,19 @@ hr {
 }
 
     /* 단어 포맷 */
-    p>code, li>code{
-        padding:2px;
-        margin: 0 0.5em 0 0.5em;
-        
-        color: white;
-        font-weight: bold;
-        
-        background-color: #d24d4d;
-        border-radius : 4px 4px 4px 4px;
-    }
+p>code, li>code{
+    padding:2px;
+    margin: 0 0.5em 0 0.5em;
+    
+    color: white;
+    font-weight: bold;
+    font-size: 1em;
+    line-height: 1.357em;
+    
+    background-color: #d24d4d;
+    border-radius : 4px 4px 4px 4px;
+}
 
-    tt{
-        color: blue;
-    }
+tt{
+    color: blue;
+}
