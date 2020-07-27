@@ -54,6 +54,7 @@ function toStyle(css){
 function wrapContents(contents_buffer){
     return Buffer.concat([
         Buffer.from(`
+        <section id='background'></section>
         <ul id='search-tree'></ul>
         <aside id='scroll-gage'>0%</aside>
         <main>
@@ -77,9 +78,10 @@ function readFile(path, options){
 function readHierarchy(file_path, criteria_path){
     const stats = fs.lstatSync(file_path)
 
+    const file_name = path.basename(file_path, '.html')
     let info = {
-        path: path.relative(criteria_path, file_path).replace('..\\', ''),
-        name: path.basename(file_path)
+        path: path.relative(criteria_path, file_path).replace(/..(?:\\|\/)/, ''),
+        name: file_name == 'dist' ? 'Archive' : file_name 
     }
 
     if (stats.isDirectory()) {
@@ -111,7 +113,7 @@ gulp.task('scss', function(){
 
     return gulp.src('./src/**/*.scss')
         .pipe(scss().on('error', scss.logError))
-        .pipe(fonts_css)
+        // .pipe(fonts_css)
         .pipe(code_syntax_css)
         
         .pipe(css_base64({
@@ -119,7 +121,7 @@ gulp.task('scss', function(){
             debug: true
         }).on('error', _=>_))
         
-        // .pipe(src_fonts_css)
+        .pipe(src_fonts_css)
         .pipe(concat('app.css'))
         
         .pipe(minify())

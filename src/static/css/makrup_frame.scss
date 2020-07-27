@@ -251,8 +251,14 @@
          
 * {
     font-family: 'Maplestory', 'Arial';
-} 
+    box-sizing: border-box;
+}
+
     
+html{
+    overflow-x: hidden;
+}
+
 body {
     background: 
       radial-gradient(black 3px, transparent 4px),
@@ -269,13 +275,15 @@ body {
 
 main {   
     padding: 2em;
-    margin: 2em auto 2em auto;
+    margin: 5em auto 2em auto;
     min-width: 26rem; 
     max-width: 76rem;
 
     border-radius: 10px;
-
     background-color: white;
+    box-shadow: -1px 1px 2px #9b9b9b;
+
+    transition: 0.5s;
 }
    
 /* 위젯  */
@@ -307,33 +315,119 @@ aside#scroll-gage{
 
     //검색 트리
 ul#search-tree{
-    display: none;
-
+    
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
 
     width: 80%;
-    padding: 0.1em;
+    min-width: 30rem; 
+    max-width: 76rem;
     margin: 0 auto 0 auto;
+    padding: 0;
 
-    z-index: 10;
+    z-index: 20;
+
+    @media screen and (max-width: 30rem) {
+        margin-left: 3.45em;
+    }
 
     li{
         list-style-type:none;
-    
+
+
         //폴더
         &.foler{
-            
+                      
         }
         //파일
         &.file{
-            display: none;            
+            // display: none;            
         }
     }
+
+    label {
+        position: relative;
+
+        padding: 0.1em 1em 0.1em 1em;
+
+        border-bottom: 1px solid red;
+        box-sizing: border-box;
+
+        &:hover{
+            cursor: pointer;
+            color: red;
+        }
+
+        &::before{
+            content: '';
+            position: absolute;
+            bottom: -0.3em;
+            left: -0.3em;
+
+            width: 0.5em;
+            height: 0.5em;
+
+            border-radius: 100%;
+            background-color: red;
+        }
+    }
+
+    #root{
+        background-color: white;
+        border: 1px solid red;
+        border-top-width: 0;
+        border-bottom-width: 0;
+        border-radius: 0 0 0.25em 0.25em;
+
+        * {
+            display: none;
+            opacity: 0;
+            transition: 0.2s;
+        }
+
+        *.expanded{
+            display: block;
+        
+            opacity: 1;
+        }
+
+        &>label{
+            display: block;
+            opacity: 1;
+
+        }
+
+
+        &.expanded {
+            padding: 0 0 1em 0;
+
+            background: none;
+            border-width: 0;
+        }
+
+    }
+    
 }
 
+#background{
+    position: fixed;
+    top:  0;
+    left: 0;
+    
+    width: 100vw;
+    height: 100vh;
+
+    opacity: 0.5;
+    z-index: 15;
+
+
+    &.expanded{
+        background-color: #9b9b9b;
+    }
+
+}
 
 
     
