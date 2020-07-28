@@ -81,14 +81,19 @@ function readHierarchy(file_path, criteria_path){
     const file_name = path.basename(file_path, '.html')
     let info = {
         path: path.relative(criteria_path, file_path).replace(/..(?:\\|\/)/, ''),
-        name: file_name == 'dist' ? 'Archive' : file_name 
+        name: file_name == 'dist' ? 'Open Archive' : file_name 
     }
 
     if (stats.isDirectory()) {
         info.type = "folder"
-        info.children = fs.readdirSync(file_path).map(function(child) {
-            return readHierarchy(path.join(file_path, child), criteria_path);
-        })
+        info.children = fs.readdirSync(file_path, { withFileTypes:true })
+            .sort((file_alpha, file_beta)=>{
+                if(file_alpha.isDirectory() && file_beta.isDirectory()) return 0
+                if(file_alpha.isDirectory()) return -1
+                return 1
+            })
+            .map(file=>file.name)
+            .map(child_path=>readHierarchy(path.join(file_path, child_path), criteria_path))
     } else {
         info.type = "file"
     }
@@ -102,18 +107,15 @@ let web_socket;
 
 server.on("connection", function(webSocket) {
     web_socket = webSocket
-});
+})
 
 /* Task */
  
 gulp.task('scss', function(){
-    const code_syntax_css = gulp.src(path.join(Path.css, 'styles', 'dark.css'))
-    const fonts_css = gulp.src(path.join(Path.css, 'fonts.css'))
     const src_fonts_css = gulp.src(path.join(Path.css, 'src_fonts.css'))
 
     return gulp.src('./src/**/*.scss')
         .pipe(scss().on('error', scss.logError))
-        .pipe(code_syntax_css)
         .pipe(css_base64({
             baseDir: './src/static',
             debug: true
@@ -124,13 +126,11 @@ gulp.task('scss', function(){
 })  
 
 gulp.task('scss::build', function(){
-    const code_syntax_css = gulp.src(path.join(Path.css, 'styles', 'dark.css'))
     const fonts_css = gulp.src(path.join(Path.css, 'fonts.css'))
     
     return gulp.src('./src/**/*.scss')
         .pipe(scss().on('error', scss.logError))
         .pipe(fonts_css)
-        .pipe(code_syntax_css)
         .pipe(css_base64({
             baseDir: './src/static',
             debug: true
@@ -170,7 +170,11 @@ gulp.task('js', function(){
 
 gulp.task('js::build', function(){
     return code_syntax_js
-        .pipe(gulp.src('./src/**/*.js'))
+        .pipe(gulp.src([
+            './src/**/*.js',
+            //ignore
+            '!./src/**/hot_reload.js'
+        ]))
         .pipe(concat('app.js'))
         .pipe(minify()) 
         .pipe(gulp.dest(Path.temp))
@@ -213,7 +217,7 @@ gulp.task('markdown::build', function () {
         .pipe(markdown())
         .pipe(through.obj(async function (file, encoding, push){
             const extra_css = toStyle(await readFile(path.join(Path.temp, 'app.css')))
-            const extra_js  = toScript(await readFile(path.join(Path.temp, 'app.js')))
+            const extra_js  = toScript(await readFile(path.join(Path.temp, 'app-min.js')))
             
             file.contents = Buffer.concat([
                 //header

@@ -7,12 +7,25 @@ window.addEventListener('scroll', function(){
     scroll_gage_element.innerText = `${Math.ceil(window.scrollY / entrie_height * 100) }%`
 })
   
+const scroll_stack = []
+function consumeScrollStack(){
+    while(scroll_stack.length){
+        const distance = scroll_stack.shift()
+        scrollTo(0, window.scrollY + distance )
+    }
+}
+
 window.addEventListener('mousewheel', function(e){
     if(!document.querySelector('#root').classList.contains('expanded')){
-        new Array(100).fill('').forEach(()=>{
-            scrollTo(0, window.scrollY + ( - e.wheelDeltaY/100 ) )
+        new Array(10).fill('').forEach(()=>{
+            scroll_stack.push(-e.wheelDeltaY/10)
         })
+        consumeScrollStack()
     }   
+})
+
+window.addEventListener('touchstart', function(e){
+    
 })
 
 
@@ -42,11 +55,15 @@ function castToHierarchyTree(tree){
 const tree_element = document.querySelector('#search-tree')
 tree_element.innerHTML = castToHierarchyTree(JSON.parse(`#tree_json_literal#`))
 
-document.querySelector('#search-tree>#root>label').addEventListener('click', function(e){
+document.querySelector('#search-tree>#root>label').addEventListener('click', async function(e){ 
     const class_name = 'expanded'
     const root_element = e.target.parentNode
+    
+    //pending
+    root_element.classList.toggle('pending')
+    if(root_element.classList.contains('pending'))await delay(300);
     root_element.classList.toggle(class_name);
-  
+    
     (function expandElement(children){
         if(children){
             for(let child of children){
@@ -120,3 +137,11 @@ tree_element_list.forEach(tree_element=>{
         mouseDown = true;
     })
 })
+
+
+//async util
+function delay(ms){
+    return new Promise(resolve=>{
+        setTimeout(resolve, ms)
+    })
+}

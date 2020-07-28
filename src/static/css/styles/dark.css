@@ -24,20 +24,30 @@ Dark style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Or
   color: #ddd;
 }
 
-.hljs-string,
+
 .hljs-title,
 .hljs-name,
 .hljs-type,
 .hljs-attribute,
 .hljs-symbol,
 .hljs-bullet,
-.hljs-built_in,
 .hljs-addition,
 .hljs-variable,
 .hljs-template-tag,
 .hljs-template-variable {
   color: #d88;
 }
+
+/* 커스텀 */
+
+.hljs-built_in{
+  color: #67bf8e;
+}
+.hljs-string{
+  color: brown;
+}
+
+/* * * * */
 
 .hljs-comment,
 .hljs-quote,

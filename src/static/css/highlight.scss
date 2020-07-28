@@ -1,0 +1,86 @@
+/*
+
+Dark style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+
+*/
+
+.hljs {
+    display: block;
+    overflow-x: auto;
+    padding: 0.5em;
+    background: #444;
+  }
+  
+  .hljs-attr,
+  .hljs-section{
+    color: white;
+  }
+  
+  .hljs,
+  .hljs-subst {
+    color: #ddd;
+  }
+  
+  .hljs-string,
+  .hljs-title,
+  .hljs-name,
+  .hljs-type,
+  .hljs-attribute,
+  .hljs-symbol,
+  .hljs-bullet,
+  .hljs-addition,
+  .hljs-variable,
+  .hljs-template-tag,
+  .hljs-template-variable {
+    color: #d88;
+  }
+  
+
+  /* 커스텀 */
+
+  .hljs-number,
+  .hljs-built_in,
+  .hljs-builtin-name,
+  .hljs-type,
+  .hljs-params,
+  .hljs-meta,
+  .hljs-link {
+    color: #67bf8e;
+  }
+
+.hljs-literal,
+.hljs-symbol,
+.hljs-name {
+  color: #569CD6;
+}
+
+
+.hljs-keyword,
+.hljs-selector-tag {
+  color: #cc99cc;
+}
+  
+  /* * * * */
+  
+  .hljs-comment,
+  .hljs-quote,
+  .hljs-deletion {
+    color: #999999;
+  }
+  
+  .hljs-keyword,
+  .hljs-selector-tag,
+  .hljs-title,
+  .hljs-section,
+  .hljs-doctag,
+  .hljs-type,
+  .hljs-name,
+  .hljs-strong {
+    font-weight: bold;
+  }
+  
+  .hljs-emphasis {
+    font-style: italic;
+  }
+
+

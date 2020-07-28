@@ -260,7 +260,7 @@ html{
     overflow-y: hidden;
 
     &.expanded{
-        overflow-y: hidden;
+
     }
 }
 
@@ -313,8 +313,7 @@ aside#scroll-gage{
     border-left-width: 0;
     border-radius: 0 0 5px 0;
 
-    background-color: #d40000;
-    
+    background-color: #d40000;    
 }
 
     //검색 트리
@@ -347,7 +346,7 @@ ul#search-tree{
         }
         //파일
         &.file{
-            // display: none;            
+                        
         }
     }
 
@@ -401,6 +400,25 @@ ul#search-tree{
             display: block;
             opacity: 1;
 
+            color: #d40000;
+
+            &::before{
+                content: '';
+                position: absolute;
+                bottom: -0.3em;
+                left: calc( 100% - 0.15em );
+
+                width: 0.5em;
+                height: 0.5em;
+    
+                border-radius: 100%;
+                background-color: red;
+
+                transition: 
+                    all 0.4s,
+                    width 0.4s, height 0.4s, left 0.4s;
+                transition-timing-function: ease-in;
+            }
         }
 
 
@@ -409,6 +427,26 @@ ul#search-tree{
 
             background: none;
             border-width: 0;
+        
+            &>label{
+                border-bottom: 1px dashed red;
+            }
+
+            &>label::before{
+                left: - 0.3em;
+                right: auto;
+                background-color: black;
+            }
+        }
+
+        &.pending {
+            
+            &>label::before{
+                right: auto;
+                left: -0.3em;
+
+                background-color: black;
+            }
         }
 
     }

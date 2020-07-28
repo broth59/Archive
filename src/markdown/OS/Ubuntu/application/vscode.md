@@ -35,7 +35,7 @@
 
 ```javascript
 //.eslintrc.js
-module.export = {
+module.exports = {
 	/* Target */
     files: [ './src/*' ],
     ignorePatterns : [ '/node_modules/' ],
@@ -159,6 +159,9 @@ $ npm pulish
 
 ```
 
-- sdf
-    - as
-        - asd
+```javascript
+    const a = 'gkq'
+    function tt(){
+        console.log(good)
+    }
+```
