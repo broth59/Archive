@@ -113,20 +113,33 @@ gulp.task('scss', function(){
 
     return gulp.src('./src/**/*.scss')
         .pipe(scss().on('error', scss.logError))
-        // .pipe(fonts_css)
         .pipe(code_syntax_css)
-        
         .pipe(css_base64({
             baseDir: './src/static',
             debug: true
         }).on('error', _=>_))
-        
         .pipe(src_fonts_css)
         .pipe(concat('app.css'))
-        
+        .pipe(gulp.dest(Path.temp))
+})  
+
+gulp.task('scss::build', function(){
+    const code_syntax_css = gulp.src(path.join(Path.css, 'styles', 'dark.css'))
+    const fonts_css = gulp.src(path.join(Path.css, 'fonts.css'))
+    
+    return gulp.src('./src/**/*.scss')
+        .pipe(scss().on('error', scss.logError))
+        .pipe(fonts_css)
+        .pipe(code_syntax_css)
+        .pipe(css_base64({
+            baseDir: './src/static',
+            debug: true
+        }).on('error', _=>_))
+        .pipe(concat('app.css'))
         .pipe(minify())
         .pipe(gulp.dest(Path.temp))
 })  
+
 
 /* Fonts */
 
@@ -146,6 +159,7 @@ gulp.task('fonts', function() {
   });
 
 
+
 gulp.task('js', function(){
     return code_syntax_js
         .pipe(gulp.src('./src/**/*.js'))
@@ -153,6 +167,15 @@ gulp.task('js', function(){
         .pipe(minify()) 
         .pipe(gulp.dest(Path.temp))
 }) 
+
+gulp.task('js::build', function(){
+    return code_syntax_js
+        .pipe(gulp.src('./src/**/*.js'))
+        .pipe(concat('app.js'))
+        .pipe(minify()) 
+        .pipe(gulp.dest(Path.temp))
+}) 
+
  
 
 gulp.task('markdown', function () {
@@ -172,19 +195,36 @@ gulp.task('markdown', function () {
             push(null, file)
         }))
         .pipe(html_base64('./src/static/img'))
-        // .pipe(replace(/src\s*=\s*(?:"|')(http\S+)(?:"|')/g, async function(full_text,url){
-        //     if(url_cache.has(url)){
-        //         return url_cache.get(url) 
-        //     }
-        //     return await axios.get('https://www.blockchaintoday.co.kr/news/photo/201911/11591_11634_3252.png', {
-        //         responseType: 'blob'   
-        //     }).then((result)=>{
-        //         console.log(result.headers['content-type'])
-        //         return `src="data:${result.headers['content-type']};base64,${Buffer.from(result.data).toString('base64')}"` 
-        //     }).catch((e)=>{
-        //         console.log(e)
-        //     })        
-        // }))
+        .pipe(gulp.dest('./dist'))
+        .pipe(through.obj(async function(file, encoding, push){
+            const dist_html_path = file.history[file.history.length-1]
+            const fs_hierarchy_literal = JSON.stringify(readHierarchy(Path.dist, dist_html_path)).replace(/\\\\/g, '/')
+            const content = file.contents.toString()
+            file.contents = Buffer.from( content.replace('#tree_json_literal#', ()=>fs_hierarchy_literal), encoding)
+            
+            push(null, file)
+        }))
+        .pipe(htmlmin({ collapseWhitespace: true }))
+        .pipe(gulp.dest('./dist'))
+})
+
+gulp.task('markdown::build', function () {
+    return gulp.src('./src/markdown/**/*.md')
+        .pipe(markdown())
+        .pipe(through.obj(async function (file, encoding, push){
+            const extra_css = toStyle(await readFile(path.join(Path.temp, 'app.css')))
+            const extra_js  = toScript(await readFile(path.join(Path.temp, 'app.js')))
+            
+            file.contents = Buffer.concat([
+                //header
+                Buffer.from(meta_tag_html),
+                Buffer.from(extra_css),
+                wrapContents(file.contents),
+                Buffer.from(extra_js),
+            ])
+            push(null, file)
+        }))
+        .pipe(html_base64('./src/static/img'))
         .pipe(gulp.dest('./dist'))
         .pipe(through.obj(async function(file, encoding, push){
             const dist_html_path = file.history[file.history.length-1]
@@ -219,6 +259,13 @@ gulp.task('watch', function () {
 })
 
 gulp.task('default', gulp.series(['scss','js','markdown', 'watch']))
+
+gulp.task('build', async function(){
+    await console.log(gulp.series(['scss::build','js::build','markdown::build'])())
+    server.close()
+    shell.rm('-r', Path.temp)
+})
+
 
 
 process.on('SIGINT', function() { 

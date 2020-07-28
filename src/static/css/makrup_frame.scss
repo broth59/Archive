@@ -239,7 +239,7 @@
 //     right: 0;
 //     color: #fff;
 //     text-align: right;
-//     font-size: 10px;
+//     font-size: 10px; 
 //     font-weight: 700;
 //     letter-spacing: 1px;
 //     background: #9b9b9b;
@@ -257,6 +257,11 @@
     
 html{
     overflow-x: hidden;
+    overflow-y: hidden;
+
+    &.expanded{
+        overflow-y: hidden;
+    }
 }
 
 body {
@@ -304,7 +309,6 @@ aside#scroll-gage{
     color: white;
     font-weight: 700;
 
-    border: 1px solid red;
     border-top-width: 0;
     border-left-width: 0;
     border-radius: 0 0 5px 0;
@@ -420,11 +424,12 @@ ul#search-tree{
     height: 100vh;
 
     opacity: 0.5;
-    z-index: 15;
+    z-index: 0;
 
 
     &.expanded{
         background-color: #9b9b9b;
+        z-index: 15;
     }
 
 }
@@ -571,6 +576,11 @@ a {
         //     white-space: nowrap;
         //     overflow: hidden;
         // }
+    }
+
+    &:focus{
+        outline-width: 0;
+        border-width: 0;
     }
 }
 

@@ -40,5 +40,9 @@
     "@babel/core": "^7.10.5",
     "awesome-typescript-loader": "^5.2.1",
     "typescript": "^3.9.7"
+  },
+
+  "scripts": {
+    "build" : "gulp build"
   }
 }
