@@ -42,8 +42,8 @@ Dark style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Or
   .hljs-built_in,
   .hljs-builtin-name,
   .hljs-type,
-  .hljs-params,
   .hljs-meta,
+  .hljs-params,
   .hljs-link {
     color: #67bf8e;
   }
@@ -57,7 +57,8 @@ Dark style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Or
 
 .hljs-keyword,
 .hljs-selector-tag {
-  color: #cc99cc;
+  color: #d23737;
+  //color: #cc99cc;
 }
   
   /* * * * */
@@ -76,7 +77,7 @@ Dark style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Or
   .hljs-type,
   .hljs-name,
   .hljs-strong {
-    font-weight: bold;
+    font-weight: normal;
   }
   
   .hljs-emphasis {
