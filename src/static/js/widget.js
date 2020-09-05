@@ -62,10 +62,13 @@ tree_element.innerHTML = castToHierarchyTree(JSON.parse(`#tree_json_literal#`))
 document.querySelector('#search-tree>#root>label').addEventListener('click', async function (e) {
 	const class_name = 'expanded'
 	const root_element = e.target.parentNode
+	const search_tree_element = root_element.parentNode
 
 	//pending
 	root_element.classList.toggle('pending')
 	if (root_element.classList.contains('pending')) await delay(300)
+	else search_tree_element.style.marginTop = '0px'
+
 	root_element.classList.toggle(class_name)
 	;(function expandElement(children) {
 		if (children) {
@@ -131,6 +134,7 @@ tree_element_list.forEach((tree_element) => {
 	})
 	tree_element.addEventListener('touchstart', function (event) {
 		console.log('start')
+
 		event.preventDefault()
 		mouseDown = true
 	})
