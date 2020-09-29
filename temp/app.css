@@ -1,0 +1,515 @@
+@charset "UTF-8";
+/*
+
+Dark style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+
+*/
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  background: #444; }
+
+.hljs-attr,
+.hljs-section {
+  color: white; }
+
+.hljs,
+.hljs-subst {
+  color: #ddd; }
+
+.hljs-string,
+.hljs-title,
+.hljs-name,
+.hljs-type,
+.hljs-attribute,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition,
+.hljs-variable,
+.hljs-template-tag,
+.hljs-template-variable {
+  color: #d88; }
+
+/* 커스텀 */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-type,
+.hljs-meta,
+.hljs-params,
+.hljs-link {
+  color: #67bf8e; }
+
+.hljs-literal,
+.hljs-symbol,
+.hljs-name {
+  color: #569CD6; }
+
+.hljs-keyword,
+.hljs-selector-tag {
+  color: #d23737; }
+
+/* * * * */
+.hljs-comment,
+.hljs-quote,
+.hljs-deletion {
+  color: #999999; }
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-title,
+.hljs-section,
+.hljs-doctag,
+.hljs-type,
+.hljs-name,
+.hljs-strong {
+  font-weight: normal; }
+
+.hljs-emphasis {
+  font-style: italic; }
+
+@charset "UTF-8";
+* {
+  font-family: 'Maplestory', 'Arial';
+  box-sizing: border-box; }
+
+html {
+  overflow-x: hidden;
+  overflow-y: hidden; }
+
+body {
+  background: radial-gradient(black 3px, transparent 4px), radial-gradient(black 3px, transparent 4px), linear-gradient(#fff 4px, transparent 0), linear-gradient(45deg, transparent 74px, transparent 75px, #a4a4a4 75px, #a4a4a4 76px, transparent 77px, transparent 109px), linear-gradient(-45deg, transparent 75px, transparent 76px, #a4a4a4 76px, #a4a4a4 77px, transparent 78px, transparent 109px), #fff;
+  background-size: 109px 109px, 109px 109px,100% 6px, 109px 109px, 109px 109px;
+  background-position: 54px 55px, 0px 0px, 0px 0px, 0px 0px, 0px 0px; }
+
+/* Main frame  */
+main {
+  padding: 2em;
+  margin: 5em auto 2em auto;
+  min-width: 26rem;
+  max-width: 76rem;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: -1px 1px 2px #9b9b9b;
+  transition: 0.5s; }
+
+/* 위젯  */
+aside#scroll-gage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 50px;
+  height: 25px;
+  color: white;
+  font-weight: 700;
+  border-top-width: 0;
+  border-left-width: 0;
+  border-radius: 0 0 5px 0;
+  background-color: #d40000; }
+
+ul#search-tree {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 80%;
+  min-width: 30rem;
+  max-width: 76rem;
+  margin: 0 auto 0 auto;
+  margin-top: 0px;
+  padding: 0;
+  z-index: 20;
+  transition: margin 0.2s; }
+  @media screen and (max-width: 30rem) {
+    ul#search-tree {
+      margin-left: 3.45em; } }
+  ul#search-tree ul {
+    padding-inline-start: 40px; }
+  ul#search-tree li {
+    list-style-type: none; }
+  ul#search-tree label {
+    position: relative;
+    padding: 0.1em 1em 0.1em 1em;
+    border-bottom: 1px solid red;
+    box-sizing: border-box; }
+    ul#search-tree label:hover {
+      cursor: pointer;
+      color: red; }
+    ul#search-tree label::before {
+      content: '';
+      position: absolute;
+      bottom: -0.3em;
+      left: -0.3em;
+      width: 0.5em;
+      height: 0.5em;
+      border-radius: 100%;
+      background-color: red; }
+  ul#search-tree #root {
+    background-color: white;
+    border: 1px solid red;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-radius: 0 0 0.25em 0.25em; }
+    ul#search-tree #root * {
+      display: none;
+      opacity: 0;
+      transition: 0.2s; }
+    ul#search-tree #root *.expanded {
+      display: block;
+      opacity: 1; }
+    ul#search-tree #root > label {
+      display: block;
+      opacity: 1;
+      color: #d40000; }
+      ul#search-tree #root > label::before {
+        content: '';
+        position: absolute;
+        bottom: -0.3em;
+        left: calc( 100% - 0.15em);
+        width: 0.5em;
+        height: 0.5em;
+        border-radius: 100%;
+        background-color: red;
+        transition: all 0.4s, width 0.4s, height 0.4s, left 0.4s;
+        transition-timing-function: ease-in; }
+    ul#search-tree #root.expanded {
+      padding: 0 0 1em 0;
+      background: none;
+      border-width: 0; }
+      ul#search-tree #root.expanded > label {
+        border-bottom: 1px dashed red; }
+      ul#search-tree #root.expanded > label::before {
+        left: -0.3em;
+        right: auto;
+        background-color: black; }
+    ul#search-tree #root.pending > label::before {
+      right: auto;
+      left: -0.3em;
+      background-color: black; }
+
+#background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0.5;
+  z-index: 0; }
+  #background.expanded {
+    background-color: #9b9b9b;
+    z-index: 15; }
+
+/* 헤더 */
+h1, h2, h3, h4 {
+  font-weight: 400; }
+
+h1, h2, h3, h4 {
+  color: #b30000;
+  border-color: #800000; }
+
+h1 {
+  padding-bottom: 0.3em;
+  line-height: 1.2;
+  border-bottom-width: 2px;
+  border-bottom-style: solid; }
+
+h2 {
+  padding-bottom: 0.3em;
+  line-height: 1.2;
+  border-bottom-width: 1px;
+  border-bottom-style: solid; }
+
+/* 인용문 */
+blockquote {
+  position: relative;
+  margin: 5px 7px 5px 5px;
+  padding: 1px 16px 1px 15px;
+  color: #8e0000;
+  border-left-width: 5px;
+  border-left-style: solid;
+  border-color: #b30000;
+  background-color: #fff4f4; }
+
+blockquote::after {
+  content: '"';
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 16px;
+  left: -12.5px;
+  height: 15px;
+  width: 15px;
+  color: white;
+  border-radius: 100%;
+  border: 2px solid #b30000;
+  background-color: #b30000;
+  background-image: url('C:/Users/broth59/Desktop/Side project/markdown_archive/src/static/img/blockquote.png');
+  background-size: 100% auto;
+  background-position: center center; }
+
+/* 코드조각 */
+pre {
+  position: relative; }
+
+pre > code.hljs {
+  border-radius: 5px 5px 5px 5px; }
+
+pre > code.hljs::after {
+  content: attr(data-lang);
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  height: 15px;
+  padding: 2px 7px;
+  color: #fff;
+  text-align: right;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  background: #9b9b9b;
+  line-height: 15px;
+  border-radius: 0 0 0 2px; }
+
+/* 페이지 */
+p {
+  word-break: keep-all; }
+
+/* 이미지 */
+img {
+  max-width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 5%; }
+
+/* 하이퍼 텍스트 */
+a {
+  position: relative;
+  color: seagreen;
+  text-decoration: none; }
+  a:hover {
+    text-decoration: underline; }
+  a:focus {
+    outline-width: 0;
+    border-width: 0; }
+
+/* 테이블 */
+table {
+  margin-left: 16px; }
+  table * {
+    border-color: #39004d; }
+  table thead {
+    color: #39004d;
+    border-bottom-width: 2px;
+    border-bottom-style: dashed; }
+
+/* 리스트 */
+ol {
+  padding-inline-start: 20px; }
+
+ul {
+  padding-inline-start: 20px; }
+
+ul > li > ol > li, ol > li > ol > li {
+  list-style-type: hangul; }
+
+/* ETC Fragment */
+hr {
+  border-color: #b30000; }
+
+/* 단어 포맷 */
+p > code, li > code {
+  padding: 2px;
+  margin: 0 0.3em 0 0.3em;
+  color: white;
+  font-weight: normal;
+  font-size: 1em;
+  line-height: 1.357em;
+  background-color: #d24d4d;
+  border-radius: 4px 4px 4px 4px; }
+
+/* 단어 Fragment */
+sea {
+  color: #5555ca;
+  margin: 0 0.25em 0 0.25em; }
+
+forest {
+  color: #00692f;
+  margin: 0 0.25em 0 0.25em; }
+
+gray {
+  color: #999999;
+  margin: 0 0.25em 0 0.25em; }
+
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+html, body {
+  font-family: var(--markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", system-ui, "Ubuntu", "Droid Sans", sans-serif);
+  font-size: var(--markdown-font-size, 14px);
+  padding: 0 26px;
+  line-height: var(--markdown-line-height, 22px);
+  word-wrap: break-word; }
+
+#code-csp-warning {
+  position: fixed;
+  top: 0;
+  right: 0;
+  color: white;
+  margin: 16px;
+  text-align: center;
+  font-size: 12px;
+  font-family: sans-serif;
+  background-color: #444444;
+  cursor: pointer;
+  padding: 6px;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.25); }
+
+#code-csp-warning:hover {
+  text-decoration: none;
+  background-color: #007acc;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25); }
+
+body.scrollBeyondLastLine {
+  margin-bottom: calc(100vh - 22px); }
+
+body.showEditorSelection .code-line {
+  position: relative; }
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: -12px;
+  height: 100%; }
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+  left: -30px; }
+
+.vscode-light.showEditorSelection .code-active-line:before {
+  border-left: 3px solid rgba(0, 0, 0, 0.15); }
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+  border-left: 3px solid rgba(0, 0, 0, 0.4); }
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+  border-left: none; }
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+  border-left: 3px solid rgba(255, 255, 255, 0.4); }
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+  border-left: 3px solid rgba(255, 255, 255, 0.6); }
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+  border-left: none; }
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+  border-left: 3px solid rgba(255, 160, 0, 0.7); }
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+  border-left: 3px solid #ffa000; }
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+  border-left: none; }
+
+a:hover {
+  text-decoration: underline; }
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 1px solid -webkit-focus-ring-color;
+  outline-offset: -1px; }
+
+hr {
+  border: 0;
+  height: 2px;
+  border-bottom: 2px solid; }
+
+table {
+  border-collapse: collapse; }
+
+table > thead > tr > th {
+  text-align: left;
+  border-bottom: 1px solid; }
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+  padding: 5px 10px; }
+
+table > tbody > tr + tr > td {
+  border-top: 1px solid; }
+
+body.wordWrap pre {
+  white-space: pre-wrap; }
+
+pre:not(.hljs),
+pre.hljs code > div {
+  padding: 5px;
+  border-radius: 3px;
+  overflow: auto; }
+
+pre code {
+  color: var(--vscode-editor-foreground);
+  tab-size: 4; }
+
+/** Theming */
+.vscode-light pre {
+  background-color: rgba(220, 220, 220, 0.4); }
+
+.vscode-dark pre {
+  background-color: rgba(10, 10, 10, 0.4); }
+
+.vscode-high-contrast pre {
+  background-color: black; }
+
+.vscode-high-contrast h1 {
+  border-color: black; }
+
+.vscode-light table > thead > tr > th {
+  border-color: rgba(0, 0, 0, 0.69); }
+
+.vscode-dark table > thead > tr > th {
+  border-color: rgba(255, 255, 255, 0.69); }
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+  border-color: rgba(0, 0, 0, 0.18); }
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+  border-color: rgba(255, 255, 255, 0.18); }
+
+@font-face { 
+    font-family: "Maplestory"; 
+    font-style: normal; 
+    font-stretch: normal; 
+    font-weight: 400; 
+    font-display: auto; 
+    src: local("Maplestory"), 
+        url('C:\\Users\\broth59\\Desktop\\Side project\\markdown_archive\\src\\static\\css\\fonts\\maplestory\\Maplestory_Light.ttf')
+}
+
+@font-face { 
+    font-family: "Maplestory"; 
+    font-style: normal; 
+    font-stretch: normal; 
+    font-weight: 700; 
+    font-display: auto; 
+    src: local("Maplestory"), 
+        url('C:\\Users\\broth59\\Desktop\\Side project\\markdown_archive\\src\\static\\css\\fonts\\maplestory\\Maplestory_Bold.ttf')
+}

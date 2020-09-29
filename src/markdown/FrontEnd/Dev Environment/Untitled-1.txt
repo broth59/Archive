@@ -1,0 +1,8 @@
+<tr>
+    <th scope="row"><with:message msgkey="FD01_0201_V30.title.TAX_EVID_NO" nullvalue="면세증빙번호"/></th>
+    <td>
+        <div class="item">
+            <with:text id="FD01_0201_frmE02_TaxEvidNo" field="TAX_EVID_NO" label="면세증빙번호" msgkey="FD01_0201_V30.title.TAX_EVID_NO" width="281" rowdisp="N" imemode="number"/>
+        </div>
+    </td>
+</tr>

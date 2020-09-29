@@ -1,0 +1,37 @@
+### Prettier
+>Code literal formatter
+
+
+* **Configuration**
+    
+```json
+//.prettierrc
+{
+  "singleQuote": true,     // 따옴표 고정
+  "semi": true,            // 코드 끝에 ; 설정
+  "useTabs": false,        // Tap 사용여부
+  "tabWidth": 2,           // Tap 크기
+  "trailingComma": "all",  // 객체 끝 부분에도 Comma 추가
+  "printWidth": 100        // 줄 당 max length
+}
+
+```
+
+```json
+//setting.json
+{
+  [javascript]: {
+		"editor.formatOnSave": true,
+      	"prettier.semi": false,
+      	"prettier.printWidth": 100
+  }
+}
+
+```
+
+```javascript
+    const a = 'gkq'
+    function tt(){
+        console.log(good)
+    }
+```
