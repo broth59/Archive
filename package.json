@@ -24,7 +24,7 @@
     "gulp-markdown-it": "^0.1.1",
     "gulp-minify": "^3.1.0",
     "gulp-replace": "^1.0.0",
-    "gulp-sass": "^4.1.0",
+    "gulp-sass": "^5.1.0",
     "gulp-scss": "^1.4.0",
     "gulp-uglify": "^3.0.2",
     "gulp-uglify-es": "^2.0.0",
